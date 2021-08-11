@@ -22,7 +22,7 @@ class WebAdapter:
                     f.write(chunk)
         logger.info('Wrote cache file at %s' % cache_file_path)
       except Exception as e:
-        logger.warning("Error: Failed to cache content at {url}, error code was {code}".format(
+        logger.warning("Failed to cache content at {url}, error code was {code}".format(
           url=url,
           code=response_obj.status_code
           )
@@ -35,11 +35,25 @@ class WebAdapter:
     cache = kwargs.get('cache', False)
     cache_path = kwargs.get('cache_path', '/tmp')
     cache_time_limit = kwargs.get('cache_time', 60)
+    timeout = kwargs.get('timeout')
 
-    if username and password:
-      response = requests.get(url, auth=HTTPBasicAuth(username, password))
-    else:
-      response = requests.get(url)
+    try:
+      response = requests.get(
+        url, 
+        auth=HTTPBasicAuth(username, password),
+        timeout=timeout
+        )
+      if username and password:
+        response = requests.get(url, auth=HTTPBasicAuth(username, password))
+      else:
+        response = requests.get(url)
+    except Exception as e:
+        logger.error("Connection to {url} failed with error {err}".format(
+          url=url,
+          err=e
+          )
+        )
+        return
 
     if response.status_code == 200:
       if cache:
@@ -61,7 +75,15 @@ class WebAdapter:
             logger.info('Cache time for file at %s has expired' % cache_file)
             self.write_cache_file(response, cache_file)
           else:
-            return open(cache_file).read()
+            try:
+              cached_content = open(cache_file).read()
+            except Exception as e:
+              logger.error("Reading cache file {f} failed with error {err}".format(
+                f=cache_file,
+                err=e
+                )
+              )
+            return
       return(response.text)
     else:
       return "Error: Call to {url} failed with error code {code}".format(
