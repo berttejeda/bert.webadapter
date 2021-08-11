@@ -3,7 +3,7 @@
 
 # Overview
 
-This module wraps around the get method for the requests library.
+This module wraps around the get method for the python requests library.
 
 I'm only using it to download files for now.
 
