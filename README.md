@@ -52,3 +52,13 @@ res = webadapter.get(url,
   cache_time=30)
 ```
 
+# Keyword Args
+
+```
+Keyword                                      | Type                    | Possible Values        | Effect                           | Example
+-------------------------------------------- | ----------------------- | --------------------------------------------------------------
+fail_on_errors                               | bool                    | [True, False]          | Raise an error instead           | webadapter = WebAdapter(fail_on_errors=True)
+                                                                       |                        | of ignoring and                  |
+                                                                       |                        | returning 'None' or empty string |
+```
+
