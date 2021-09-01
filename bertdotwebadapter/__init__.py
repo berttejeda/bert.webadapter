@@ -9,8 +9,8 @@ logger = Logger().init_logger(__name__)
 
 class WebAdapter:
 
-  def __init__(self):
-    pass
+  def __init__(self, **kwargs):
+    self.fail_on_errors = kwargs.get('fail_on_errors')
 
   def write_cache_file(self, response_obj, cache_file_path):
 
@@ -48,12 +48,15 @@ class WebAdapter:
       else:
         response = requests.get(url)
     except Exception as e:
-        logger.error("Connection to {url} failed with error {err}".format(
+        err_message = "Connection to {url} failed with error {err}".format(
           url=url,
           err=e
-          )
         )
-        return
+        if self.fail_on_errors:
+          raise Exception(err_message)
+        else:
+          logger.error(err_message)
+          return
 
     if response.status_code == 200:
       if cache:
@@ -86,7 +89,11 @@ class WebAdapter:
             return
       return(response.text)
     else:
-      return "Error: Call to {url} failed with error code {code}".format(
+      err_message = "Error: Call to {url} failed with error code {code}".format(
         url=url,
         code=response.status_code
-        )
+      )
+      if self.fail_on_errors:
+        raise Exception(err_message)
+      else:
+        return err_message
