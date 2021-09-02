@@ -4,13 +4,17 @@ import os
 import re
 import requests
 from requests.auth import HTTPBasicAuth
+import sys
 
 logger = Logger().init_logger(__name__)
+
 
 class WebAdapter:
 
   def __init__(self, **kwargs):
     self.fail_on_errors = kwargs.get('fail_on_errors')
+    self.verify_tls = kwargs.get('verify_tls', True)
+    logger.debug('Module imported by', sys._getframe(1).f_globals.get('__name__'))
 
   def write_cache_file(self, response_obj, cache_file_path):
 
@@ -41,12 +45,22 @@ class WebAdapter:
       response = requests.get(
         url, 
         auth=HTTPBasicAuth(username, password),
+        verify=self.verify_tls,
         timeout=timeout
         )
       if username and password:
-        response = requests.get(url, auth=HTTPBasicAuth(username, password))
+        response = requests.get(
+          url, 
+          auth=HTTPBasicAuth(username, password),
+          verify=self.verify_tls,
+          timeout=timeout          
+        )
       else:
-        response = requests.get(url)
+        response = requests.get(
+        url,
+        verify=self.verify_tls,
+        timeout=timeout
+        )
     except Exception as e:
         err_message = "Connection to {url} failed with error {err}".format(
           url=url,

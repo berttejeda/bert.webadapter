@@ -11,7 +11,7 @@ class Logger:
     # Setup Logging
     logger = logging.getLogger(name)
     # TODO Find a better approach to this hacky method
-    if '---debug' in ' '.join(sys.argv) or self.debug:
+    if '--debug' in ' '.join(sys.argv) or self.debug:
         logger.setLevel(logging.DEBUG)
     else:
         logger.setLevel(logging.INFO)
