@@ -14,7 +14,8 @@ class WebAdapter:
   def __init__(self, **kwargs):
     self.fail_on_errors = kwargs.get('fail_on_errors')
     self.verify_tls = kwargs.get('verify_tls', True)
-    logger.debug('Module imported by', sys._getframe(1).f_globals.get('__name__'))
+    caller = sys._getframe(1).f_globals.get('__name__', 'N/A')
+    logger.debug('Module imported by', caller)
 
   def write_cache_file(self, response_obj, cache_file_path):
 
