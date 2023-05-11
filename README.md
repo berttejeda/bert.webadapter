@@ -17,7 +17,7 @@ I'll likely build upon it in the future.
 
 # Installation
 
-* From pypi: `pip3 install bertdotwebadapter`
+* From pypi: `pip3 install btweb`
 * From this git repo: `pip3 install git+https://github.com/berttejeda/bert.webadapter.git`<br />
   Note: To install a specific version of the library from this git repo, <br />
   suffix the git URL in the above command with @{ tag name }, e.g.: <br />
@@ -29,7 +29,7 @@ I'll likely build upon it in the future.
 
 ```python
 
-from bertdotwebadapter import WebAdapter
+from btweb import WebAdapter
 
 webadapter = WebAdapter()
 res = webadapter.get(url, 
@@ -41,7 +41,7 @@ res = webadapter.get(url,
 
 ```python
 
-from bertdotwebadapter import WebAdapter
+from btweb import WebAdapter
 
 webadapter = WebAdapter()
 res = webadapter.get(url, 
