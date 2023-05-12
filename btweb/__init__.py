@@ -1,5 +1,5 @@
 import datetime
-from bertdotwebadapter.logger import Logger
+from btweb.logger import Logger
 import os
 import re
 import requests
