@@ -11,7 +11,8 @@ class Logger:
     # Setup Logging
     logger = logging.getLogger(name)
     # TODO Find a better approach to this hacky method
-    if '--debug' in ' '.join(sys.argv) or self.debug:
+    BTWEB_DEBUG = os.environ.get('BTWEB_DEBUG','').lower()
+    if BTWEB_DEBUG in ['true','yes','on','1'] or self.debug:    
         logger.setLevel(logging.DEBUG)
     else:
         logger.setLevel(logging.INFO)
